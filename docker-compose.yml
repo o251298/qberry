@@ -1,0 +1,36 @@
+version: "3.3"
+services:
+    nginx:
+        container_name: qberry-nginx
+        build:
+            context: .
+            dockerfile: .docker/nginx/Dockerfile
+        ports:
+            - "8080:80"
+        depends_on:
+            - php
+        volumes:
+            - "./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+    php:
+        container_name: qberry-php
+        build:
+            context: .
+            dockerfile: .docker/php/Dockerfile
+        volumes:
+            - .:/var/www/html
+    mysql:
+        container_name: qberry-mysql
+        build:
+            context: .
+            dockerfile: .docker/mysql/Dockerfile
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_PASSWORD: 'secret'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            MYSQL_ROOT_HOST: "%"
+        volumes:
+            - ./db:/var/lib/mysql
