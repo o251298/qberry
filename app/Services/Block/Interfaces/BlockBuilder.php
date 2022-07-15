@@ -9,6 +9,6 @@ interface BlockBuilder
 {
     public function location(int $id) : BlockBuilderInterface;
     public function fridges(string $condition, int $bottom, int $upper) : BlockBuilderInterface;
-    public function blocks(string $condition, int $status) : BlockBuilderInterface;
+    public function blocks(string $start, string $end) : BlockBuilderInterface;
     public function collection($limit) : Collection;
 }

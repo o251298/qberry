@@ -23,4 +23,22 @@ class Block extends Model
     {
         return $this->status === 0;
     }
+
+    public function getBookings()
+    {
+        return $this->belongsToMany(Booking::class);
+    }
+
+    public function getBlockBooking($start, $end)
+    {
+        // занятые
+        return $this->hasMany(BlockBooking::class)->where('start', '>=', $start)->where('end', '<=', $end);
+    }
+
+    public function status($start, $end)
+    {
+        return $this->getBlockBooking($start, $end)->get()->all() ? 1 : self::FREE_BLOCK;
+    }
+
+
 }

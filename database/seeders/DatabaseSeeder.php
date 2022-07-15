@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\BlockBooking;
+use App\Models\Booking;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -43,8 +45,10 @@ class DatabaseSeeder extends Seeder
 //            'timezone' => 'GMT+8',
 //        ]);
         // create Fridge data
-        Fridge::factory(50)->create();
+        //Fridge::factory(50)->create();
         // create Block data
-        Block::factory(150)->create();
+        //Block::factory(150)->create();
+        //Booking::factory(20)->create();
+        BlockBooking::factory(40)->create();
     }
 }

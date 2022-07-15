@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Block;
+use App\Models\Block;
 use App\Models\Location;
 use App\Services\Block\Interfaces\BlockBuilder as BlockBuilderInterface;
 use Illuminate\Support\Collection;
@@ -36,13 +37,13 @@ class BlockBuilder implements BlockBuilderInterface
         return $this;
     }
 
-    public function blocks(string $condition, int $status) : BlockBuilderInterface
+    public function blocks(string $start, string $end) : BlockBuilderInterface
     {
         foreach ($this->model->fridges as $fridge)
         {
-            foreach ($fridge->getBlocks()->where($condition, $status)->orderBy('fridge_id', 'ASC')->get() as $item)
+            foreach ($fridge->getBlocks()->orderBy('fridge_id', 'ASC')->get() as $item)
             {
-                $arrayObj[] = $item;
+                if ($item->status($start, $end) == Block::FREE_BLOCK) $arrayObj[] = $item;
             }
         }
         $this->model->blocks = new Collection($arrayObj);

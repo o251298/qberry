@@ -33,16 +33,25 @@ class LocationController extends Controller
 
     public function create(Request $request): JsonResponse
     {
+
+//        $location = Location::find(1);
+//        foreach ($location->getBlocks()->get() as $block)
+//        {
+//            if ($block->status('2022-11-16', '2022-11-30') == Block::FREE_BLOCK) dump($block);
+//
+//        }
+//
+//        dd(1);
         $location    = (int)$request->get('location');
         $dataStart   = (string)$request->get('data_start');
         $dataEnd     = (string)$request->get('data_end');
         $volume      = (int)$request->get('volume');
         $temperature = (int)$request->get('temperature');
         try {
-            $data       = new BlockValidator('2022-11-10', '2022-11-30', 8, -17);
+            $data       = new BlockValidator('2022-11-10', '2022-11-30', 10, -17);
             $collection = (new BlockBuilder())->location(2)
                 ->fridges('temperature', $data->bottomTemp, $data->upperTemp)
-                ->blocks('status', Block::FREE_BLOCK)
+                ->blocks($data->dataStart, $data->dataEnd)
                 ->collection($data->needBlocks());
             return new JsonResponse([
                 'info'     => [
