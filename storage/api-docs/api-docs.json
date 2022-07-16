@@ -1,0 +1,344 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L5 OpenApi",
+        "description": "L5 Swagger OpenApi description",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Register"
+                ],
+                "summary": "User Register",
+                "description": "User Register here",
+                "operationId": "Register",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "text"
+                                    },
+                                    "email": {
+                                        "type": "text"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Register Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Register Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/locations": {
+            "get": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Get List Locations",
+                "operationId": "4a95f25c1e13530115fd3fd6961b92de",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "location": {
+                                                        "type": "string",
+                                                        "example": "Wilmington"
+                                                    },
+                                                    "timezone": {
+                                                        "type": "string",
+                                                        "example": "GMT-4"
+                                                    },
+                                                    "count_free_blocks": {
+                                                        "type": "number",
+                                                        "example": "14"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/location/get-blocks": {
+            "post": {
+                "tags": [
+                    "Get blocks"
+                ],
+                "operationId": "f9178e242eb24ec5f98565950e770491",
+                "parameters": [
+                    {
+                        "name": "location",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An int value.",
+                                "value": "1"
+                            }
+                        }
+                    },
+                    {
+                        "name": "date_start",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "date starts",
+                                "value": "2022-11-04"
+                            }
+                        }
+                    },
+                    {
+                        "name": "date_end",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "date ends",
+                                "value": "2022-11-20"
+                            }
+                        }
+                    },
+                    {
+                        "name": "volume",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "volume",
+                                "value": "2"
+                            }
+                        }
+                    },
+                    {
+                        "name": "temperature",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "temperature",
+                                "value": "-3"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "location": {
+                                                "type": "integer"
+                                            },
+                                            "date_start": {
+                                                "type": "string"
+                                            },
+                                            "date_end": {
+                                                "type": "string"
+                                            },
+                                            "volume": {
+                                                "type": "integer"
+                                            },
+                                            "temperature": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "location": 1,
+                                    "date_start": "2022-11-01",
+                                    "date_end": "2022-11-20",
+                                    "volume": 2,
+                                    "temperature": -3
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "you_need_blocks": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "we_have_block": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "start_data": {
+                                            "type": "string",
+                                            "example": "2022-11-01"
+                                        },
+                                        "end_data": {
+                                            "type": "string",
+                                            "example": "2022-11-02"
+                                        },
+                                        "location": {
+                                            "type": "string",
+                                            "example": "Wilmington"
+                                        },
+                                        "hash": {
+                                            "type": "string",
+                                            "example": "$2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "id"
+                                                    },
+                                                    "fridge_id": {
+                                                        "type": "number",
+                                                        "example": "23"
+                                                    },
+                                                    "length": {
+                                                        "type": "number",
+                                                        "example": "2"
+                                                    },
+                                                    "width": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "height": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "volume": {
+                                                        "type": "number",
+                                                        "example": "2"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Описание ошибки"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

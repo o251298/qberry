@@ -15,4 +15,4 @@ use App\Models\Block;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\Api\LocationController::class, 'create']);
+Route::get('/', [\App\Http\Controllers\Api\BookingController::class, 'index']);

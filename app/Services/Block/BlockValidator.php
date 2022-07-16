@@ -17,6 +17,7 @@ class BlockValidator
      */
     public function __construct(public string $dataStart, public string $dataEnd, public int $volume, public int $temperature)
     {
+        $this->required();
         $this->setTemperature();
         $this->checkDate();
     }
@@ -51,7 +52,15 @@ class BlockValidator
         if ($diff->y != 0 || $diff->m != 0 || ($diff->days > 24)) {
             throw new BlockValidationException("The shelf life of products should be in the range of 24 days");
         }
-        $this->dataStart = $start;
-        $this->dataEnd   = $end;
+        $this->dataStart = $start->format('Y-m-d');
+        $this->dataEnd   = $end->format('Y-m-d');
+    }
+
+    /**
+     * @throws BlockValidationException
+     */
+    public function required(): void
+    {
+        if (empty($this->dataStart) || empty($this->dataEnd) || empty($this->volume) || empty($this->temperature)) throw new BlockValidationException("Пропущен объязательный параметр");
     }
 }

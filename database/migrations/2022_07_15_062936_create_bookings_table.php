@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id')->default(1);
             $table->integer('status')->default(0);
+            $table->string('hash', 255)->unique('hash_order');
             $table->float('amount')->default(1.0);
             $table->timestamps();
         });

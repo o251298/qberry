@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Block;
+
 use App\Models\Block;
 use App\Models\Location;
 use App\Services\Block\Interfaces\BlockBuilder as BlockBuilderInterface;
@@ -11,7 +12,7 @@ class BlockBuilder implements BlockBuilderInterface
 {
     protected BlocksCollection $model;
 
-    protected function reset() : void
+    protected function reset(): void
     {
         $this->model = new BlocksCollection();
     }
@@ -19,7 +20,7 @@ class BlockBuilder implements BlockBuilderInterface
     /**
      * @throws BlockCollectionException
      */
-    public function location(int $id) : BlockBuilderInterface
+    public function location(int $id): BlockBuilderInterface
     {
         $this->reset();
         $this->model->location = Location::find($id);
@@ -30,19 +31,21 @@ class BlockBuilder implements BlockBuilderInterface
     /**
      * @throws BlockCollectionException
      */
-    public function fridges(string $condition, int $bottom, int $upper) : BlockBuilderInterface
+    public function fridges(string $condition, int $bottom, int $upper): BlockBuilderInterface
     {
         $this->model->fridges = $this->model->location->getFridges()->whereBetween('temperature', [$bottom, $upper])->get();
         if (!$this->model->fridges) throw new BlockCollectionException("The fridges at this location has not yet been created");
         return $this;
     }
 
-    public function blocks(string $start, string $end) : BlockBuilderInterface
+    /**
+     * @throws BlockCollectionException
+     */
+    public function blocks(string $start, string $end): BlockBuilderInterface
     {
-        foreach ($this->model->fridges as $fridge)
-        {
-            foreach ($fridge->getBlocks()->orderBy('fridge_id', 'ASC')->get() as $item)
-            {
+        $arrayObj = [];
+        foreach ($this->model->fridges as $fridge) {
+            foreach ($fridge->getBlocks()->orderBy('fridge_id', 'ASC')->get() as $item) {
                 if ($item->status($start, $end) == Block::FREE_BLOCK) $arrayObj[] = $item;
             }
         }
@@ -53,7 +56,7 @@ class BlockBuilder implements BlockBuilderInterface
     /**
      * @throws BlockCollectionException
      */
-    public function collection($limit) : Collection
+    public function collection($limit): Collection
     {
         $count = count($this->model->blocks);
         if ($limit > $count) throw new BlockCollectionException("Sorry, no blocks were found matching your query. You need {$limit} blocks, {$count} is available");

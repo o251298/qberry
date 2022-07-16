@@ -34,3 +34,11 @@ services:
             MYSQL_ROOT_HOST: "%"
         volumes:
             - ./db:/var/lib/mysql
+    redis:
+        image: redis:alpine
+        container_name: qberry-redis
+        command: redis-server /usr/local/etc/redis/redis.conf --requirepass o251298
+        ports:
+            - "6379:6379"
+        volumes:
+            - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
