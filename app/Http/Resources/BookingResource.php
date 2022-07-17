@@ -20,7 +20,7 @@ class BookingResource extends JsonResource
             'hash' => $this->hash,
             'amount' => $this->amount,
             'blocks' => [
-                $this->getBlockFromBookings()->get()
+                BookingBlockResource::collection($this->getBlockFromBookings()->get())
             ]
         ];
     }

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->integer('booking_id');
             $table->integer('block_id');
-            $table->date('start')->default('2022-01-01');
-            $table->date('end')->default('2022-01-24');
+            $table->timestamp('start')->default('2022-01-01 00:00:00');
+            $table->timestamp('end')->default('2022-01-24 00:00:00');
             $table->unique(['booking_id', 'block_id', 'start', 'end'], 'unique_order');
             $table->timestamps();
         });

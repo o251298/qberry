@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LocationResource;
+use App\Models\Block;
 use App\Models\BlockBooking;
 use App\Models\Booking;
 use App\Models\Location;
-use App\Services\Block\BlockBuilder;
 use App\Services\Block\BlockPrepare;
-use App\Services\Block\BlockValidator;
+use App\Services\Order\BookingCreator;
+use App\Services\Order\OrderCreator;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Database\QueryException;
@@ -48,7 +48,9 @@ class LocationController extends Controller
     public function index(): JsonResponse
     {
         $LocationsCollection = Location::all();
-        return new JsonResponse(['status' => "success", "data" => LocationResource::collection($LocationsCollection)], Response::HTTP_OK);
+        return new JsonResponse([
+            'status' => "success", "data" => LocationResource::collection($LocationsCollection)
+        ], Response::HTTP_OK);
     }
 
 
@@ -196,6 +198,7 @@ class LocationController extends Controller
                 'we_have_block'   => count($prepare->collection),
                 'start_data'      => $prepare->data->dataStart,
                 'end_data'        => $prepare->data->dataEnd,
+                'sum'             => Block::PAYMENT_PER_DAY * count($prepare->collection) * $prepare->data->diff->days,
                 'hash'            => $prepare->hash,
                 'data'            => $prepare->collection
             ], 200);
@@ -330,29 +333,16 @@ class LocationController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            $key      = (string)$request->get('hash');
-            $objs     = unserialize(Redis::get($key));
-            $objsTime = (array)json_decode(Redis::get($key . "&time"));
-
-            $booking = Booking::create([
-                'user_id' => 1,
-                'hash'    => $key,
-                'status'  => 1,
-                'amount'  => 100
-            ]);
-            foreach ($objs as $item) {
-                $newProduct             = new BlockBooking();
-                $newProduct->booking_id = $booking->id;
-                $newProduct->block_id   = $item->id;
-                $newProduct->start      = $objsTime['start'];
-                $newProduct->end        = $objsTime['end'];
-                $newProduct->save();
-            }
+            $hash           = (string) $request->get('hash');
+            $bookingCreator = new BookingCreator($hash);
+            $booking        = $bookingCreator->save();
+            $orderCreator   = new OrderCreator($booking);
+            $orderCreator->save($bookingCreator->objects, $bookingCreator->time);
             return new JsonResponse([
                 'status' => "success",
                 'data'   => $booking
             ], Response::HTTP_CREATED);
-        } catch (QueryException $exceptionDB){
+        } catch (QueryException $exceptionDB) {
             Log::error($exceptionDB);
             return new JsonResponse([
                 'status' => "error",

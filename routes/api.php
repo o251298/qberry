@@ -15,12 +15,12 @@ use App\Http\Controllers\Api\BookingController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/auth/register', [AuthController::class, 'createUser']);
-Route::post('/auth/login', [AuthController::class, 'loginUser'])->name('login');
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function (){
-    Route::get('locations', [LocationController::class, 'index']); // api docs
-    Route::post('location/get-blocks-by-location', [LocationController::class, 'create']); //
+    Route::get('locations', [LocationController::class, 'index']);
+    Route::post('location/get-blocks-by-location', [LocationController::class, 'create']);
     Route::post('location/booking-store', [LocationController::class, 'store']);
     Route::get('bookings', [BookingController::class, 'index']);
 });

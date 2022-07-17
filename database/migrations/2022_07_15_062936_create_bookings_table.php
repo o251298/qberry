@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('status')->default(0);
             $table->string('hash', 255)->unique('hash_order');
             $table->float('amount')->default(1.0);
+            $table->timestamp('date_payment');
             $table->timestamps();
         });
     }

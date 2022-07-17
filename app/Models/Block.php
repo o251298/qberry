@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Block extends Model
 {
@@ -12,6 +13,7 @@ class Block extends Model
     protected $guarded = [];
     public const VOLUME_STANDART = 2;
     public const FREE_BLOCK = 0;
+    public const PAYMENT_PER_DAY = 10;
     protected $hidden = ['laravel_through_key', 'created_at', 'updated_at'];
 
     public function getFridge()
@@ -29,16 +31,34 @@ class Block extends Model
         return $this->belongsToMany(Booking::class);
     }
 
-    public function getBlockBooking($start, $end)
+    public function getLocation()
     {
-        // занятые
-        return $this->hasMany(BlockBooking::class)->where('start', '>=', $start)->where('end', '<=', $end);
-    }
+        return $this->hasOneThrough(Location::class, Fridge::class, 'id', 'id','fridge_id', 'location_id');
 
-    public function status($start, $end)
-    {
-        return $this->getBlockBooking($start, $end)->get()->all() ? 1 : self::FREE_BLOCK;
     }
 
 
+    public static function getBlockTest($start, $end, $fridge_id)
+    {
+        $activeBlocks = self::sqlGetBlocks($start, $end);
+        $ids = self::getActiveId($activeBlocks);
+        return self::query()->whereIn('fridge_id', $fridge_id)->whereNotIn('id', $ids)->orderBy('fridge_id', 'DESC');
+    }
+
+
+    public static function sqlGetBlocks($start, $end)
+    {
+        $sql = "SELECT * FROM block_booking
+WHERE ('$start' BETWEEN `start` AND `end`) OR ('$end' BETWEEN `start` AND `end`) OR (`start` > '$start' AND `end` < '$end')";
+        $statement = DB::select($sql);
+        return $statement;
+    }
+
+    public static function getActiveId(array $statement)
+    {   $ids = [];
+        foreach ($statement as $item) {
+            $ids[] = $item->block_id;
+        }
+        return $ids;
+    }
 }

@@ -11,4 +11,9 @@ class BlockBooking extends Model
     protected $table = 'block_booking';
     protected $guarded = [];
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function getBlock()
+    {
+        return $this->hasOne(Block::class, 'id', 'block_id');
+    }
 }

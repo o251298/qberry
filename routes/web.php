@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Location;
 use App\Models\Fridge;
 use App\Models\Block;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +16,4 @@ use App\Models\Block;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\Api\BookingController::class, 'index']);
+Route::get('/', [AdminController::class, 'testTime']);

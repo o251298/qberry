@@ -4,7 +4,7 @@ namespace App\Services\Block;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
-
+use App\Services\Block\v2\BlockBuilder;
 class BlockPrepare
 {
     public BlockValidator $data;

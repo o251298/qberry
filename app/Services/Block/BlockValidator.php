@@ -10,6 +10,7 @@ class BlockValidator
 {
     public $bottomTemp;
     public $upperTemp;
+    public $diff;
     public const deviation = 2;
 
     /**
@@ -48,12 +49,16 @@ class BlockValidator
     {
         $start = Carbon::create($this->dataStart);
         $end   = Carbon::create($this->dataEnd);
-        $diff  = $start->diff($end);
-        if ($diff->y != 0 || $diff->m != 0 || ($diff->days > 24)) {
+        $this->diff  = $start->diff($end);
+        if ($end < $start)
+        {
+            throw new BlockValidationException("start > end");
+        }
+        if ($this->diff->y != 0 || $this->diff->m != 0 || ($this->diff->days > 24)) {
             throw new BlockValidationException("The shelf life of products should be in the range of 24 days");
         }
-        $this->dataStart = $start->format('Y-m-d');
-        $this->dataEnd   = $end->format('Y-m-d');
+        $this->dataStart = $start->format('Y-m-d H:i:s');
+        $this->dataEnd   = $end->format('Y-m-d H:i:s');
     }
 
     /**

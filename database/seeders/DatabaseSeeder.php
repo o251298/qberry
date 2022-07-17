@@ -22,27 +22,27 @@ class DatabaseSeeder extends Seeder
         // create Location data
 //        DB::table('locations')->insert([
 //            'location' => 'Wilmington',
-//            'timezone' => 'GMT-4',
+//            'timezone' => '-4',
 //        ]);
 //        DB::table('locations')->insert([
 //            'location' => 'Portland',
-//            'timezone' => 'GMT-7',
+//            'timezone' => '-7',
 //        ]);
 //        DB::table('locations')->insert([
 //            'location' => 'Toronto',
-//            'timezone' => 'GMT-4',
+//            'timezone' => '-4',
 //        ]);
 //        DB::table('locations')->insert([
 //            'location' => 'Warsaw',
-//            'timezone' => 'GMT+2',
+//            'timezone' => '+2',
 //        ]);
 //        DB::table('locations')->insert([
 //            'location' => 'Valencia',
-//            'timezone' => 'GMT+2',
+//            'timezone' => '+2',
 //        ]);
 //        DB::table('locations')->insert([
 //            'location' => 'Shanghai',
-//            'timezone' => 'GMT+8',
+//            'timezone' => '+8',
 //        ]);
         // create Fridge data
         //Fridge::factory(50)->create();
