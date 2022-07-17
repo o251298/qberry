@@ -20,7 +20,7 @@ class LocationResource extends JsonResource
             'id'                => $this->id,
             'location'          => $this->location,
             'timezone'          => $this->timezone,
-            'count_free_blocks' => count($this->getFreeBlocks()->get())
+            'count_free_blocks' => count($this->getFreeBlocks()->get()) ?? 0
         ];
     }
 }

@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Location;
-use App\Models\Fridge;
-use App\Models\Block;
 use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +13,16 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', [AdminController::class, 'testTime']);
+Route::get('/', function ()
+{
+    return view('welcome');
+});
+
+// Admin routes
+Route::prefix('admin')->group(function ()
+{
+    Route::get('/update-block-status', [AdminController::class, 'updateBlockStatus']);
+    Route::get('/send-balance/{user}', [AdminController::class, 'sendBalance'])->name('send_balance');
+    Route::get('/show-users', [AdminController::class, 'showUsers']);
+});
+

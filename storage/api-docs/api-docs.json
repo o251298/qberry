@@ -76,13 +76,14 @@
                 }
             }
         },
-        "/api/locations": {
+        "/api/v1/my-bookings": {
             "get": {
                 "tags": [
-                    "Locations"
+                    "My bookings"
                 ],
-                "summary": "Get List Locations",
-                "operationId": "4a95f25c1e13530115fd3fd6961b92de",
+                "summary": "Get all my bookings.",
+                "description": "Get all my bookings.",
+                "operationId": "d59c0876cd936c63e620f1077a7984b1",
                 "responses": {
                     "200": {
                         "description": "success",
@@ -90,6 +91,106 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "hash": {
+                                                        "type": "string",
+                                                        "example": "$2y$10$2tAK97EjD7C2vjzVB1DBG.qZstWITxntkAdYXoqVqpDYarfIK6PF."
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "250"
+                                                    },
+                                                    "blocks": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "number",
+                                                                    "example": "1"
+                                                                },
+                                                                "booking_id": {
+                                                                    "type": "number",
+                                                                    "example": "1"
+                                                                },
+                                                                "block_id": {
+                                                                    "type": "number",
+                                                                    "example": "1"
+                                                                },
+                                                                "start": {
+                                                                    "type": "string",
+                                                                    "example": "2022-11-01 08:40:00"
+                                                                },
+                                                                "end": {
+                                                                    "type": "string",
+                                                                    "example": "2022-11-01 08:40:00"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/locations": {
+            "get": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Get all the locations that are on the service",
+                "description": "Get all the locations that are on the service",
+                "operationId": "98a7408f3af02933f14393e7c7d5a7d3",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
                                         "data": {
                                             "type": "array",
                                             "items": {
@@ -123,21 +224,19 @@
                 }
             }
         },
-        "/api/location/get-blocks": {
+        "/api/v1/booking-blocks-by-location": {
             "post": {
                 "tags": [
-                    "Get blocks"
+                    "Get blocks by location"
                 ],
-                "operationId": "f9178e242eb24ec5f98565950e770491",
+                "summary": "Get all available blocks by using data filtering",
+                "operationId": "aa91d7d2d88ac36751743484ea117bd0",
                 "parameters": [
                     {
                         "name": "location",
                         "in": "path",
-                        "description": "Parameter with mutliple examples",
+                        "description": "ID location",
                         "required": true,
-                        "schema": {
-                            "type": "int"
-                        },
                         "examples": {
                             "int": {
                                 "summary": "An int value.",
@@ -148,11 +247,8 @@
                     {
                         "name": "date_start",
                         "in": "path",
-                        "description": "Parameter with mutliple examples",
+                        "description": "Block lease start date. The start date cannot be less than the current date.",
                         "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
                         "examples": {
                             "int": {
                                 "summary": "date starts",
@@ -163,11 +259,8 @@
                     {
                         "name": "date_end",
                         "in": "path",
-                        "description": "Parameter with mutliple examples",
+                        "description": "Block lease ends date",
                         "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
                         "examples": {
                             "int": {
                                 "summary": "date ends",
@@ -178,11 +271,8 @@
                     {
                         "name": "volume",
                         "in": "path",
-                        "description": "Parameter with mutliple examples",
+                        "description": "Volume of products in m3",
                         "required": true,
-                        "schema": {
-                            "type": "int"
-                        },
                         "examples": {
                             "int": {
                                 "summary": "volume",
@@ -193,11 +283,8 @@
                     {
                         "name": "temperature",
                         "in": "path",
-                        "description": "Parameter with mutliple examples",
+                        "description": "Refrigerator temperature. The temperature cannot be more than 0 degrees Celsius. If you need to specify temperature 0 - specify -2",
                         "required": true,
-                        "schema": {
-                            "type": "int"
-                        },
                         "examples": {
                             "int": {
                                 "summary": "temperature",
@@ -214,18 +301,23 @@
                                     "": {
                                         "properties": {
                                             "location": {
+                                                "description": "ID location",
                                                 "type": "integer"
                                             },
                                             "date_start": {
+                                                "description": "Block lease start date. The start date cannot be less than the current date.",
                                                 "type": "string"
                                             },
                                             "date_end": {
+                                                "description": "Block lease ends date",
                                                 "type": "string"
                                             },
                                             "volume": {
+                                                "description": "Volume of products in m3",
                                                 "type": "integer"
                                             },
                                             "temperature": {
+                                                "description": "Refrigerator temperature. The temperature cannot be more than 0 degrees Celsius. If you need to specify temperature 0 - specify -2",
                                                 "type": "integer"
                                             }
                                         },
@@ -235,8 +327,8 @@
                                 "type": "object",
                                 "example": {
                                     "location": 1,
-                                    "date_start": "2022-11-01",
-                                    "date_end": "2022-11-20",
+                                    "date_start": "2022-11-01 12:00:00",
+                                    "date_end": "2022-11-20 12:00:00",
                                     "volume": 2,
                                     "temperature": -3
                                 }
@@ -257,23 +349,28 @@
                                         },
                                         "you_need_blocks": {
                                             "type": "number",
-                                            "example": "1"
+                                            "example": "2"
                                         },
                                         "we_have_block": {
                                             "type": "number",
-                                            "example": "1"
+                                            "example": "2"
                                         },
                                         "start_data": {
                                             "type": "string",
-                                            "example": "2022-11-01"
+                                            "example": "2022-11-01 12:00:00"
                                         },
                                         "end_data": {
                                             "type": "string",
-                                            "example": "2022-11-02"
+                                            "example": "2022-11-02 12:00:00"
                                         },
                                         "location": {
                                             "type": "string",
                                             "example": "Wilmington"
+                                        },
+                                        "sum": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "10"
                                         },
                                         "hash": {
                                             "type": "string",
@@ -306,6 +403,10 @@
                                                     "volume": {
                                                         "type": "number",
                                                         "example": "2"
+                                                    },
+                                                    "status": {
+                                                        "type": "number",
+                                                        "example": "0"
                                                     }
                                                 },
                                                 "type": "object"
@@ -335,6 +436,183 @@
                                     "type": "object"
                                 }
                             }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/confirm-booking": {
+            "post": {
+                "tags": [
+                    "Confirm order"
+                ],
+                "operationId": "d794746527a5c8aa0aae093dab77078e",
+                "parameters": [
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "This is a token that is issued once when an order is created. This token can be obtained in the endpoint '/api/v1/order-blocks-by-location'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "hash": {
+                                "summary": "hash",
+                                "value": "$2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "hash": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "hash": "$2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "user_id": {
+                                                        "type": "number",
+                                                        "example": "2"
+                                                    },
+                                                    "hash": {
+                                                        "type": "string",
+                                                        "example": "$2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F"
+                                                    },
+                                                    "status": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "amount": {
+                                                        "type": "number",
+                                                        "example": "10"
+                                                    },
+                                                    "date_payment": {
+                                                        "type": "string",
+                                                        "example": "2022-07-22T18:00:00.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "number",
+                                                        "example": "2022-07-17T10:51:49.000000Z"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "number",
+                                                        "example": "2022-07-17T10:51:49.000000Z"
+                                                    },
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Описание ошибки"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "401": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Unauthenticated"
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 }

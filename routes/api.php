@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\BookingController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,12 +16,12 @@ use App\Http\Controllers\Api\BookingController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/register', [AuthController::class, 'createUser']);
+Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
-Route::middleware('auth:sanctum')->group(function (){
-    Route::get('locations', [LocationController::class, 'index']);
-    Route::post('location/get-blocks-by-location', [LocationController::class, 'create']);
-    Route::post('location/booking-store', [LocationController::class, 'store']);
-    Route::get('bookings', [BookingController::class, 'index']);
+Route::prefix('v1')->group(function () {
+    Route::get('locations', [LocationController::class, 'index'])->middleware('auth:sanctum');
+    Route::post('booking-blocks-by-location', [LocationController::class, 'create'])->middleware('auth:sanctum');
+    Route::post('confirm-booking', [LocationController::class, 'store'])->middleware('auth:sanctum');
+    Route::get('my-bookings', [BookingController::class, 'index'])->middleware('auth:sanctum');
 });

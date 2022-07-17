@@ -12,7 +12,6 @@ class BlockBuilder extends \App\Services\Block\BlockBuilder
         public function blocks(string $start, string $end): BlockBuilderInterface
         {
             $timezone = $this->model->location->timezone;
-            $arrayObj = [];
             $fridge_id = [];
             foreach ($this->model->fridges as $fridge) {
                 $fridge_id[] = $fridge->id;
