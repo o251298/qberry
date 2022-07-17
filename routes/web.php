@@ -17,7 +17,7 @@ use App\Http\Controllers\ClientController;
 
 
 // Форма для бронирования холодильного помещание
-Route::get('/', [ClientController::class, 'index']);
+Route::get('/', [ClientController::class, 'index'])->name('main');
 // Вывод информации о бронировании
 Route::post('client/get-block', [ClientController::class, 'getBlocks'])->name('client_get_block');
 // Подтверждение бронирования
@@ -27,10 +27,10 @@ Route::post('client/confirm-booking', [ClientController::class, 'confirmBooking'
 Route::prefix('admin')->group(function ()
 {
     // Обновить статусы всем блокам
-    Route::get('/update-block-status', [AdminController::class, 'updateBlockStatus']);
+    Route::get('/update-block-status', [AdminController::class, 'updateBlockStatus'])->name('update_status_block');
     // Отобразить баланс клиента
     Route::get('/send-balance/{user}', [AdminController::class, 'sendBalance'])->name('send_balance');
     // Отобразить список клиентов
-    Route::get('/show-users', [AdminController::class, 'showUsers']);
+    Route::get('/show-users', [AdminController::class, 'showUsers'])->name('admin');
 });
 
