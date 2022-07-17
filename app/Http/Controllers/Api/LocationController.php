@@ -262,6 +262,7 @@ class LocationController extends Controller
      *                          @OA\Property( property="hash",type="string", example="$2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F"),
      *                          @OA\Property( property="status",type="number", example="1"),
      *                          @OA\Property( property="amount",type="number", example="10"),
+     *                          @OA\Property( property="password_for_booking",type="string", example="WWkmH6cDIf1l"),
      *                          @OA\Property( property="date_payment",type="string", example="2022-07-22T18:00:00.000000Z"),
      *                          @OA\Property( property="updated_at",type="number", example="2022-07-17T10:51:49.000000Z"),
      *                          @OA\Property( property="created_at",type="number", example="2022-07-17T10:51:49.000000Z"),

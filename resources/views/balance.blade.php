@@ -1,3 +1,5 @@
+@extends('layouts.master')
+@section('content')
 <p>
     {{$sumInvoice}}
 </p>
@@ -6,3 +8,4 @@
         <li>{!! dump($payment); !!}</li>
     @endforeach
 </ul>
+@endsection

@@ -809,6 +809,10 @@
                                                         "type": "number",
                                                         "example": "10"
                                                     },
+                                                    "password_for_booking": {
+                                                        "type": "string",
+                                                        "example": "WWkmH6cDIf1l"
+                                                    },
                                                     "date_payment": {
                                                         "type": "string",
                                                         "example": "2022-07-22T18:00:00.000000Z"

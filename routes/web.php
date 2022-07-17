@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+
+use App\Http\Controllers\ClientController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,16 +15,22 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', function ()
-{
-    return view('welcome');
-});
 
-// Admin routes
+// Форма для бронирования холодильного помещание
+Route::get('/', [ClientController::class, 'index']);
+// Вывод информации о бронировании
+Route::post('client/get-block', [ClientController::class, 'getBlocks'])->name('client_get_block');
+// Подтверждение бронирования
+Route::post('client/confirm-booking', [ClientController::class, 'confirmBooking'])->name('client_confirm_booking');
+
+// Админские роуты
 Route::prefix('admin')->group(function ()
 {
+    // Обновить статусы всем блокам
     Route::get('/update-block-status', [AdminController::class, 'updateBlockStatus']);
+    // Отобразить баланс клиента
     Route::get('/send-balance/{user}', [AdminController::class, 'sendBalance'])->name('send_balance');
+    // Отобразить список клиентов
     Route::get('/show-users', [AdminController::class, 'showUsers']);
 });
 
