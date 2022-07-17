@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('user_id')->default(1);
             $table->integer('status')->default(0);
             $table->string('hash', 255)->unique('hash_order');
+            $table->string('password_for_booking', 12)->unique('password_for_booking');
             $table->float('amount')->default(1.0);
             $table->timestamp('date_payment');
             $table->timestamps();

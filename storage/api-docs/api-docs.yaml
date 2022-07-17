@@ -1,13 +1,597 @@
 openapi: 3.0.0
 info:
-  title: L5 OpenApi
-  description: L5 Swagger OpenApi description
+  title: Qberry API documentation
+  description: The company is engaged in the storage of perishable products for customers around the world. With refrigeration capacity in 6 locations, flexible booking system and excellent service, the company has won the trust of large corporations.
   version: 1.0.0
 paths:
-  /:
-    get:
-      description: Home page
-      operationId: ba07f30af47fc58b59f1d978c7034d99
+  /api/auth/register:
+    post:
+      tags:
+        - Register
+      summary: User Register
+      description: User Register here
+      operationId: Register
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: text
+                email:
+                  type: text
+                password:
+                  type: password
+              type: object
+          application/json:
+            schema: {}
       responses:
-        default:
-          description: Welcome page
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        message:
+                          type: string
+                          example: User Created Successfully
+                        token:
+                          type: string
+                          example: 14|MwNOc2gK1SIK4Ls2xLcKThvNtBgNY5Jpk5eRRdZj
+                      type: object
+                type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        message:
+                          type: string
+                          example: validation error
+                        errors:
+                          type: array
+                          items:
+                            properties:
+                              email:
+                                type: array
+                                items:
+                                  type: string
+                            type: object
+                      type: object
+                type: object
+        '500':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  data:
+                    type: string
+                    example: 'SQLSTATE[HY000]: General error:'
+                type: object
+  /api/auth/login:
+    post:
+      tags:
+        - Login
+      summary: User sing-in
+      description: User sing-in here
+      operationId: Sing-in
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: text
+                password:
+                  type: password
+              type: object
+          application/json:
+            schema: {}
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        message:
+                          type: string
+                          example: User Logged In Successfully
+                        token:
+                          type: string
+                          example: 14|MwNOc2gK1SIK4Ls2xLcKThvNtBgNY5Jpk5eRRdZj
+                      type: object
+                type: object
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        message:
+                          type: string
+                          example: Email & Password does not match with our record.
+                      type: object
+                type: object
+        '500':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  data:
+                    type: string
+                    example: 'SQLSTATE[HY000]: General error:'
+                type: object
+  /api/v1/my-bookings:
+    get:
+      tags:
+        - My bookings
+      summary: Get all my bookings.
+      description: Get all my bookings.
+      operationId: d59c0876cd936c63e620f1077a7984b1
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  debt_for_the_current_month:
+                    type: integer
+                    example: '250'
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: number
+                          example: '1'
+                        user_id:
+                          type: number
+                          example: '1'
+                        hash:
+                          type: string
+                          example: $2y$10$2tAK97EjD7C2vjzVB1DBG.qZstWITxntkAdYXoqVqpDYarfIK6PF.
+                        password_for_booking:
+                          type: string
+                          example: FTI3Esra3EXJ
+                        amount:
+                          type: string
+                          example: '250'
+                        blocks:
+                          type: array
+                          items:
+                            properties:
+                              id:
+                                type: number
+                                example: '1'
+                              booking_id:
+                                type: number
+                                example: '1'
+                              block_id:
+                                type: number
+                                example: '1'
+                              start:
+                                type: string
+                                example: '2022-11-01 08:40:00'
+                              end:
+                                type: string
+                                example: '2022-11-01 08:40:00'
+                            type: object
+                      type: object
+                type: object
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated
+                type: object
+  /api/v1/booking/{booking_id}:
+    get:
+      tags:
+        - Get booking by id
+      summary: Get booking by id
+      description: Get booking by id.
+      operationId: a4a06d2aa6303681fba7dee240394ec8
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: number
+                          example: '1'
+                        user_id:
+                          type: number
+                          example: '1'
+                        status:
+                          type: number
+                          example: '1'
+                        hash:
+                          type: string
+                          example: $2y$10$2tAK97EjD7C2vjzVB1DBG.qZstWITxntkAdYXoqVqpDYarfIK6PF.
+                        password_for_booking:
+                          type: string
+                          example: FTI3Esra3EXJ
+                        amount:
+                          type: string
+                          example: '250'
+                        date_payment:
+                          type: string
+                          example: '2022-07-27 19:00:00'
+                        created_at:
+                          type: string
+                          example: '2022-07-27 19:00:00'
+                        updated_at:
+                          type: string
+                          example: '2022-07-27 19:00:00'
+                      type: object
+                type: object
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated
+                type: object
+  /api/v1/locations:
+    get:
+      tags:
+        - Locations
+      summary: Get all the locations that are on the service
+      description: Get all the locations that are on the service
+      operationId: 98a7408f3af02933f14393e7c7d5a7d3
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: number
+                          example: '1'
+                        location:
+                          type: string
+                          example: Wilmington
+                        timezone:
+                          type: string
+                          example: GMT-4
+                        count_free_blocks:
+                          type: number
+                          example: '14'
+                      type: object
+                type: object
+  /api/v1/booking-blocks-by-location:
+    post:
+      tags:
+        - Get blocks by location
+      summary: Get all available blocks by using data filtering
+      operationId: aa91d7d2d88ac36751743484ea117bd0
+      parameters:
+        - name: location
+          in: path
+          description: ID location
+          required: true
+          examples:
+            int:
+              summary: An int value.
+              value: '1'
+        - name: date_start
+          in: path
+          description: Block lease start date. The start date cannot be less than the current date.
+          required: true
+          examples:
+            int:
+              summary: date starts
+              value: '2022-11-04'
+        - name: date_end
+          in: path
+          description: Block lease ends date
+          required: true
+          examples:
+            int:
+              summary: date ends
+              value: '2022-11-20'
+        - name: volume
+          in: path
+          description: Volume of products in m3
+          required: true
+          examples:
+            int:
+              summary: volume
+              value: '2'
+        - name: temperature
+          in: path
+          description: Refrigerator temperature. The temperature cannot be more than 0 degrees Celsius. If you need to specify temperature 0 - specify -2
+          required: true
+          examples:
+            int:
+              summary: temperature
+              value: '-3'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                '':
+                  properties:
+                    location:
+                      description: ID location
+                      type: integer
+                    date_start:
+                      description: Block lease start date. The start date cannot be less than the current date.
+                      type: string
+                    date_end:
+                      description: Block lease ends date
+                      type: string
+                    volume:
+                      description: Volume of products in m3
+                      type: integer
+                    temperature:
+                      description: Refrigerator temperature. The temperature cannot be more than 0 degrees Celsius. If you need to specify temperature 0 - specify -2
+                      type: integer
+                  type: object
+              type: object
+              example:
+                location: 1
+                date_start: '2022-11-01 12:00:00'
+                date_end: '2022-11-20 12:00:00'
+                volume: 2
+                temperature: -3
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  you_need_blocks:
+                    type: number
+                    example: '2'
+                  we_have_block:
+                    type: number
+                    example: '2'
+                  start_data:
+                    type: string
+                    example: '2022-11-01 12:00:00'
+                  end_data:
+                    type: string
+                    example: '2022-11-02 12:00:00'
+                  location:
+                    type: string
+                    example: Wilmington
+                  sum:
+                    type: number
+                    format: float
+                    example: '10'
+                  hash:
+                    type: string
+                    example: $2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: number
+                          example: id
+                        fridge_id:
+                          type: number
+                          example: '23'
+                        length:
+                          type: number
+                          example: '2'
+                        width:
+                          type: number
+                          example: '1'
+                        height:
+                          type: number
+                          example: '1'
+                        volume:
+                          type: number
+                          example: '2'
+                        status:
+                          type: number
+                          example: '0'
+                      type: object
+                type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Описание ошибки
+                type: object
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated
+                type: object
+  /api/v1/confirm-booking:
+    post:
+      tags:
+        - Confirm order
+      operationId: d794746527a5c8aa0aae093dab77078e
+      parameters:
+        - name: hash
+          in: path
+          description: This is a token that is issued once when an order is created. This token can be obtained in the endpoint '/api/v1/order-blocks-by-location'
+          required: true
+          schema:
+            type: string
+          examples:
+            hash:
+              summary: hash
+              value: $2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                '':
+                  properties:
+                    hash:
+                      type: string
+                  type: object
+              type: object
+              example:
+                hash: $2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        user_id:
+                          type: number
+                          example: '2'
+                        hash:
+                          type: string
+                          example: $2y$10$ch/XPMjQ0ZAEAibE.ko5iOSOUFcLi4h2K.bDfwac8HpFhd/QsN3F
+                        status:
+                          type: number
+                          example: '1'
+                        amount:
+                          type: number
+                          example: '10'
+                        date_payment:
+                          type: string
+                          example: '2022-07-22T18:00:00.000000Z'
+                        updated_at:
+                          type: number
+                          example: '2022-07-17T10:51:49.000000Z'
+                        created_at:
+                          type: number
+                          example: '2022-07-17T10:51:49.000000Z'
+                        id:
+                          type: number
+                          example: '1'
+                      type: object
+                type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Описание ошибки
+                type: object
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated
+                type: object
+components:
+  responses:
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            properties:
+              message:
+                type: string
+                example: Unauthenticated
+            type: object

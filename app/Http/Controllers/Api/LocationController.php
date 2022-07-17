@@ -303,7 +303,7 @@ class LocationController extends Controller
             Log::error($exceptionDB);
             return new JsonResponse([
                 'status' => "error",
-                'error'  => 'Error saving to database'
+                'error'  => 'Error saving to database',
             ], Response::HTTP_BAD_REQUEST);
         } catch (\Exception $exception) {
             Log::error($exception);

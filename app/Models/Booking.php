@@ -14,16 +14,16 @@ class Booking extends Model
 
     protected $guarded = [];
 
-    public function getBlockFromBookings() : HasMany
+    public function getBlockFromBookings(): HasMany
     {
         return $this->hasMany(BlockBooking::class);
     }
 
     public static function createInvoice(User $user): Builder
     {
-        $carbon = Carbon::now();
-        $m      = $carbon->month;
-        $y      = $carbon->year;
+        $carbon   = Carbon::now();
+        $m        = $carbon->month;
+        $y        = $carbon->year;
         $payments = Booking::query()->where('user_id', $user->id)->whereBetween('date_payment', ["{$y}-{$m}-01", "{$y}-{$m}-31"]);
         return $payments;
     }

@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "L5 OpenApi",
-        "description": "L5 Swagger OpenApi description",
+        "title": "Qberry API documentation",
+        "description": "The company is engaged in the storage of perishable products for customers around the world. With refrigeration capacity in 6 locations, flexible booking system and excellent service, the company has won the trust of large corporations.",
         "version": "1.0.0"
     },
     "paths": {
@@ -44,34 +44,214 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Register Successfully",
+                        "description": "success",
                         "content": {
                             "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Register Successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "User Created Successfully"
+                                                    },
+                                                    "token": {
+                                                        "type": "string",
+                                                        "example": "14|MwNOc2gK1SIK4Ls2xLcKThvNtBgNY5Jpk5eRRdZj"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
                             }
                         }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "validation error"
+                                                    },
+                                                    "errors": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "email": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
-                    "404": {
-                        "description": "Resource Not Found"
+                    "500": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "SQLSTATE[HY000]: General error:"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "User sing-in",
+                "description": "User sing-in here",
+                "operationId": "Sing-in",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "text"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "User Logged In Successfully"
+                                                    },
+                                                    "token": {
+                                                        "type": "string",
+                                                        "example": "14|MwNOc2gK1SIK4Ls2xLcKThvNtBgNY5Jpk5eRRdZj"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Email & Password does not match with our record."
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "SQLSTATE[HY000]: General error:"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -95,6 +275,10 @@
                                             "type": "string",
                                             "example": "success"
                                         },
+                                        "debt_for_the_current_month": {
+                                            "type": "integer",
+                                            "example": "250"
+                                        },
                                         "data": {
                                             "type": "array",
                                             "items": {
@@ -110,6 +294,10 @@
                                                     "hash": {
                                                         "type": "string",
                                                         "example": "$2y$10$2tAK97EjD7C2vjzVB1DBG.qZstWITxntkAdYXoqVqpDYarfIK6PF."
+                                                    },
+                                                    "password_for_booking": {
+                                                        "type": "string",
+                                                        "example": "FTI3Esra3EXJ"
                                                     },
                                                     "amount": {
                                                         "type": "string",
@@ -142,6 +330,94 @@
                                                             },
                                                             "type": "object"
                                                         }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/booking/{booking_id}": {
+            "get": {
+                "tags": [
+                    "Get booking by id"
+                ],
+                "summary": "Get booking by id",
+                "description": "Get booking by id.",
+                "operationId": "a4a06d2aa6303681fba7dee240394ec8",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "user_id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "status": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "hash": {
+                                                        "type": "string",
+                                                        "example": "$2y$10$2tAK97EjD7C2vjzVB1DBG.qZstWITxntkAdYXoqVqpDYarfIK6PF."
+                                                    },
+                                                    "password_for_booking": {
+                                                        "type": "string",
+                                                        "example": "FTI3Esra3EXJ"
+                                                    },
+                                                    "amount": {
+                                                        "type": "string",
+                                                        "example": "250"
+                                                    },
+                                                    "date_payment": {
+                                                        "type": "string",
+                                                        "example": "2022-07-27 19:00:00"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "example": "2022-07-27 19:00:00"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "example": "2022-07-27 19:00:00"
                                                     }
                                                 },
                                                 "type": "object"
