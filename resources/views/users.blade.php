@@ -1,6 +1,9 @@
 @extends('layouts.master')
 @section('content')
-    <div class="container">
+    <h1>
+        A list of users:
+    </h1>
+    @if(isset($users))
         <ul>
             @foreach($users as $user)
                 <li>
@@ -8,5 +11,9 @@
                 </li>
             @endforeach
         </ul>
-    </div>
+    @else
+        <p>
+            Users not created
+        </p>
+    @endif
 @endsection

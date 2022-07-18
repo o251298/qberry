@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Services\Block;
+use App\Services\Block\Interfaces\BlockValidatorInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use App\Services\Block\v2\BlockBuilder;
+
 class BlockPrepare
 {
-    public BlockValidator $data;
+    public BlockValidatorInterface $data;
     public Collection $collection;
     public string $hash;
     /**
@@ -22,7 +24,7 @@ class BlockPrepare
     /**
      * @throws \App\Exceptions\BlockValidationException
      */
-    protected function setData($dateStart, $dateEnd, $volume, $temperature) : BlockValidator
+    protected function setData($dateStart, $dateEnd, $volume, $temperature) : BlockValidatorInterface
     {
         return new BlockValidator($dateStart, $dateEnd, $volume, $temperature);
     }

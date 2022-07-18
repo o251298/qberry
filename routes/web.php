@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-
 use App\Http\Controllers\ClientController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,8 +24,7 @@ Route::post('client/get-block', [ClientController::class, 'getBlocks'])->name('c
 Route::post('client/confirm-booking', [ClientController::class, 'confirmBooking'])->name('client_confirm_booking');
 
 // Админские роуты
-Route::prefix('admin')->group(function ()
-{
+Route::prefix('admin')->group(function () {
     // Обновить статусы всем блокам
     Route::get('/update-block-status', [AdminController::class, 'updateBlockStatus'])->name('update_status_block');
     // Отобразить баланс клиента

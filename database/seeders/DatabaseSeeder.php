@@ -19,36 +19,36 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // create Location data
-//        DB::table('locations')->insert([
-//            'location' => 'Wilmington',
-//            'timezone' => '-4',
-//        ]);
-//        DB::table('locations')->insert([
-//            'location' => 'Portland',
-//            'timezone' => '-7',
-//        ]);
-//        DB::table('locations')->insert([
-//            'location' => 'Toronto',
-//            'timezone' => '-4',
-//        ]);
-//        DB::table('locations')->insert([
-//            'location' => 'Warsaw',
-//            'timezone' => '+2',
-//        ]);
-//        DB::table('locations')->insert([
-//            'location' => 'Valencia',
-//            'timezone' => '+2',
-//        ]);
-//        DB::table('locations')->insert([
-//            'location' => 'Shanghai',
-//            'timezone' => '+8',
-//        ]);
-        // create Fridge data
-        //Fridge::factory(50)->create();
-        // create Block data
-        //Block::factory(150)->create();
-        //Booking::factory(20)->create();
+        //create Location data
+        DB::table('locations')->insert([
+            'location' => 'Wilmington',
+            'timezone' => '-4',
+        ]);
+        DB::table('locations')->insert([
+            'location' => 'Portland',
+            'timezone' => '-7',
+        ]);
+        DB::table('locations')->insert([
+            'location' => 'Toronto',
+            'timezone' => '-4',
+        ]);
+        DB::table('locations')->insert([
+            'location' => 'Warsaw',
+            'timezone' => '+2',
+        ]);
+        DB::table('locations')->insert([
+            'location' => 'Valencia',
+            'timezone' => '+2',
+        ]);
+        DB::table('locations')->insert([
+            'location' => 'Shanghai',
+            'timezone' => '+8',
+        ]);
+        //create Fridge data
+        Fridge::factory(50)->create();
+        //create Block data
+        Block::factory(150)->create();
+        Booking::factory(20)->create();
         BlockBooking::factory(40)->create();
     }
 }

@@ -17,10 +17,10 @@ class BlockBookingFactory extends Factory
     public function definition()
     {
         return [
-            'booking_id' => $this->faker->numberBetween(1,20),
-            'block_id' => $this->faker->numberBetween(1, 100),
-            'start' => '2022-11-0' . $this->faker->numberBetween(1,10),
-            'end' => '2022-11-' . $this->faker->numberBetween(11,30),
+            'booking_id' => $this->faker->numberBetween(1, 20),
+            'block_id'   => $this->faker->numberBetween(1, 100),
+            'start'      => '2022-11-0' . $this->faker->numberBetween(1, 10),
+            'end'        => '2022-11-' . $this->faker->numberBetween(11, 30),
         ];
     }
 }

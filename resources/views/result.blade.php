@@ -1,7 +1,9 @@
 @extends('layouts.master')
 @section('content')
-    <div class="container">
-        <div class="row">
+    <div class="row">
+        <h1>
+            Booking result:
+        </h1>
         @if(isset($response))
             @if($response->status == 'success')
                 <div class="alert alert-success" role="alert">
@@ -15,6 +17,5 @@
                 </div>
             @endif
         @endif
-        </div>
     </div>
 @endsection
