@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LocationResource;
 use App\Models\Block;
+use App\Models\Booking;
 use App\Models\Location;
 use App\Services\Block\BlockPrepare;
 use App\Services\Order\BookingCreator;
@@ -207,7 +208,7 @@ class LocationController extends Controller
                 'we_have_block'   => count($prepare->collection),
                 'start_data'      => $prepare->data->dataStart,
                 'end_data'        => $prepare->data->dataEnd,
-                'sum'             => Block::PAYMENT_PER_DAY * count($prepare->collection) * ($prepare->data->diff->days ? $prepare->data->diff->days : 1),
+                'sum'             => Booking::CalculateCost(Block::PAYMENT_PER_DAY, count($prepare->collection), ($prepare->data->diff->days ? $prepare->data->diff->days : 1)),
                 'location'        => Location::find($location)->first()['location'],
                 'hash'            => $prepare->hash,
                 'data'            => $prepare->collection

@@ -27,4 +27,10 @@ class Booking extends Model
         $payments = Booking::query()->where('user_id', $user->id)->whereBetween('date_payment', ["{$y}-{$m}-01", "{$y}-{$m}-31"]);
         return $payments;
     }
+
+    public static function CalculateCost(int $cost, int $count, int $interval): int
+    {
+        // Cтоимость одного блока * кол-во блоков * колво дней
+        return $cost * $count * $interval;
+    }
 }

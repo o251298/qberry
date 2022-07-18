@@ -1,35 +1,44 @@
 <?php
 
 namespace App\Services\Block;
+
 use App\Services\Block\Interfaces\BlockValidatorInterface;
+use App\Services\NoSQL\NoSQLStoreInterface;
+use App\Services\NoSQL\RedisStore;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redis;
 use App\Services\Block\v2\BlockBuilder;
+use App\Services\Block\Interfaces\BlockPrepareInterface;
 
-class BlockPrepare
+class BlockPrepare implements BlockPrepareInterface
 {
     public BlockValidatorInterface $data;
     public Collection $collection;
     public string $hash;
+    protected NoSQLStoreInterface $store;
+    protected Hash $hashGenerator;
+
     /**
      * @throws \App\Exceptions\BlockValidationException
      */
     public function __construct(protected string $dateStart, protected string $dateEnd, protected int $volume, protected int $temperature, protected int $location)
     {
-        $this->data = $this->setData($dateStart, $dateEnd, $volume, $temperature);
-        $this->collection = $this->getCollections();
-        $this->redisSaveData();
+        $this->hashGenerator = new Hash();
+        $this->store         = new RedisStore();
+        $this->data          = $this->setData($dateStart, $dateEnd, $volume, $temperature);
+        $this->collection    = $this->getCollections();
+        $this->saveData();
     }
+
     /**
      * @throws \App\Exceptions\BlockValidationException
      */
-    protected function setData($dateStart, $dateEnd, $volume, $temperature) : BlockValidatorInterface
+    public function setData(string $dateStart, string $dateEnd, int $volume, int $temperature): BlockValidatorInterface
     {
         return new BlockValidator($dateStart, $dateEnd, $volume, $temperature);
     }
 
-    protected function getCollections() : Collection
+    public function getCollections(): Collection
     {
         return (new BlockBuilder())->location($this->location)
             ->fridges('temperature', $this->data->bottomTemp, $this->data->upperTemp)
@@ -37,17 +46,18 @@ class BlockPrepare
             ->collection($this->data->needBlocks());
     }
 
-    protected function generateHash() : void
+    public function generateHash(): void
     {
-        $serializeCollection  = serialize($this->collection->all());
-        $this->hash = Hash::make($serializeCollection);
+        $serializeCollection = serialize($this->collection->all());
+        $this->hash          = $this->hashGenerator::make($serializeCollection);
+
     }
 
-    protected function redisSaveData() : void
+    public function saveData(): void
     {
         $this->generateHash();
-        Redis::set($this->hash, serialize($this->collection->all()));
-        Redis::set($this->hash . "&time", json_encode(['start' => $this->data->dataStart, 'end' => $this->data->dataEnd]));
+        $this->store->save($this->hash, serialize($this->collection->all()));
+        $this->store->save($this->hash . "&time", json_encode(['start' => $this->data->dataStart, 'end' => $this->data->dataEnd]));
     }
 
 }

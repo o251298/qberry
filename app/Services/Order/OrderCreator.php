@@ -13,20 +13,14 @@ class OrderCreator
     {
     }
 
-    public function save($objs, $objsTime) : void
+    public function save($objs, $objsTime): void
     {
         static $timezone = null;
         foreach ($objs as $item) {
-            if ($timezone === null)
-            {
+            if ($timezone === null) {
                 $timezone = $item->getLocation()->first()['timezone'];
             }
-            $newProduct             = new BlockBooking();
-            $newProduct->booking_id = $this->booking->id;
-            $newProduct->block_id   = $item->id;
-            $newProduct->start      = TimezoneCreator::createServerDate($timezone, $objsTime['start']);
-            $newProduct->end        = TimezoneCreator::createServerDate($timezone, $objsTime['end']);
-            $newProduct->save();
+            OrderStore::saveBlockBooking($this->booking, $item, $timezone, $objsTime);
         }
     }
 }

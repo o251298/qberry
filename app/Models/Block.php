@@ -33,29 +33,29 @@ class Block extends Model
 
     public function getLocation()
     {
-        return $this->hasOneThrough(Location::class, Fridge::class, 'id', 'id','fridge_id', 'location_id');
+        return $this->hasOneThrough(Location::class, Fridge::class, 'id', 'id', 'fridge_id', 'location_id');
 
     }
-
 
     public static function getBlockTest($start, $end, $fridge_id)
     {
         $activeBlocks = self::sqlGetBlocks($start, $end);
-        $ids = self::getActiveId($activeBlocks);
+        $ids          = self::getActiveId($activeBlocks);
         return self::query()->whereIn('fridge_id', $fridge_id)->whereNotIn('id', $ids)->orderBy('fridge_id', 'DESC');
     }
 
 
     public static function sqlGetBlocks($start, $end)
     {
-        $sql = "SELECT * FROM block_booking
+        $sql       = "SELECT * FROM block_booking
 WHERE ('$start' BETWEEN `start` AND `end`) OR ('$end' BETWEEN `start` AND `end`) OR (`start` > '$start' AND `end` < '$end')";
         $statement = DB::select($sql);
         return $statement;
     }
 
     public static function getActiveId(array $statement)
-    {   $ids = [];
+    {
+        $ids = [];
         foreach ($statement as $item) {
             $ids[] = $item->block_id;
         }
