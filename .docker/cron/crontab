@@ -1,0 +1,1 @@
+0 0 * * * cd /var/www/html && php artisan update:block >> /dev/null 2>&1

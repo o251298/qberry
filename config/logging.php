@@ -53,13 +53,18 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'booking'],
             'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+        'booking' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/block_booking/update_status.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class BlockBooking extends Model
 {
@@ -37,12 +38,14 @@ class BlockBooking extends Model
             $obj         = $passive->getBlock()->first();
             $obj->status = Block::FREE_BLOCK;
             $obj->save();
+            Log::channel('booking')->info($obj);
         }
         foreach ($blockBookingActive as $active) {
             // set status reserved
             $obj         = $active->getBlock()->first();
             $obj->status = 1;
             $obj->save();
+            Log::channel('booking')->info($obj);
         }
     }
 }

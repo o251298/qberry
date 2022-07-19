@@ -42,3 +42,12 @@ services:
             - "6379:6379"
         volumes:
             - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    cron:
+        container_name: qberry-cron
+        build:
+            context: .
+            dockerfile: .docker/cron/Dockerfile
+        volumes:
+            - .:/var/www/html
+            - ./log/cron:/var/log/cron
+        restart: always
